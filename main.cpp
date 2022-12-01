@@ -315,6 +315,7 @@ int main( int argc, const char *argv[] )
 
 
     VSyncCallback(vsync_cb);
+    
     FntLoad(960, 0);
     FntOpen(0, 8, 320, 216, 0, 100);
     DrawSync(0);

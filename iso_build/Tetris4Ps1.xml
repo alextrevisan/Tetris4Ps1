@@ -1,18 +1,18 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<iso_project image_name="Dungeonstein.bin" cue_sheet="Dungeonstein.cue" no_xa="1">
+<iso_project image_name="Tetris4PS1.bin" cue_sheet="Tetris4PS1.cue" no_xa="1">
 	<track type="data">
 		<identifiers
 			system			="PLAYSTATION"
 			application		="PLAYSTATION"
-			volume			="SLUS_034.34"
-			volume_set		="SLUS_034.34"
+			volume			="Tetris4PS1"
+			volume_set		="Tetris4PS1"
 			publisher		="ALEXANDRO TREVISAN"
 			data_preparer	="MKPSXISO"
 			copyright		="COPYLEFT"
 		/>
 		<directory_tree>
 			<file name="SYSTEM.CNF"	type="data"	source=".\system.cnf"/>
-			<file name="DUNGEON.EXE"	type="data"	source="..\bin\Dungeonstein.exe"/>
+			<file name="TETRIS.EXE"	type="data"	source="..\bin\Tetris.exe"/>
 			<dummy sectors="1024"/>
 		</directory_tree>
 		

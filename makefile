@@ -1,11 +1,11 @@
 include setup.mk
 
 # Project target name
-TARGET		= Dungeonstein
+TARGET		= Tetris
 
 #TOOLS
 #MKPSXISO    = tools/mkpsxiso.exe
-MKPSXISO_XML= iso_build/Dungeonstein.xml
+MKPSXISO_XML= iso_build/Tetris4Ps1.xml
 BIN_FOLDER  = bin
 ISO_FOLDER  = iso
 
