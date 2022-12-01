@@ -22,28 +22,6 @@ namespace
     }
 }
 
-inline void DrawSpriteRect(const TIM_IMAGE &tim, const SVECTOR &pos, const RECT &rect, const DVECTOR &uv, const CVECTOR &color)
-{
-    SPRT *sprt = (SPRT *)otable->GetNextPri();
-
-    setSprt(sprt);
-    setXY0(sprt, pos.vx, pos.vy);
-    setWH(sprt, rect.w, rect.h);
-    setRGB0(sprt, color.r, color.g, color.b);
-    setUV0(sprt, uv.vx, uv.vy);
-    setClut(sprt, tim.crect->x, tim.crect->y);
-
-    addPrim(otable->GetOt(), sprt);
-
-    otable->IncPri( sizeof(SPRT) );
-
-    DR_TPAGE *tpri = (DR_TPAGE *)otable->GetNextPri();
-    auto tpage = getTPage(tim.mode, 0, tim.prect->x, tim.prect->y);
-    setDrawTPage(tpri, 0, 0, tpage);
-    addPrim(otable->GetOt(), tpri);
-    otable->IncPri( sizeof(DR_TPAGE) );
-}
-
 inline void DrawSprite(const TIM_IMAGE &tim, const SVECTOR &pos)
 {
     SPRT *sprt = (SPRT *)otable->GetNextPri();
@@ -68,11 +46,9 @@ inline void DrawSprite(const TIM_IMAGE &tim, const SVECTOR &pos)
 
 extern u_long background[];
 extern u_long tiles[];
-extern u_long balls[];
 
 TIM_IMAGE background_tim;
 TIM_IMAGE tile_tim;
-TIM_IMAGE ball_tim;
 
 uint8_t pad_buff[2][34];
 PADTYPE *pad;
@@ -134,7 +110,7 @@ private:
                 if(Field[y][x] == 0)
                     continue;
 
-                DrawSpriteRect(tile_tim, {(short)(x*tileSize + 14), (short)(y*tileSize+16)}, {0, 0, 9, 9}, {(short)((Field[y][x]-1)*9), 0}, {127, 127, 127});
+                otable->DrawSpriteRect(tile_tim, {(short)(x*tileSize + 14), (short)(y*tileSize+16)}, {0, 0, 9, 9}, {(short)((Field[y][x]-1)*9), 0}, {127, 127, 127});
             }
         }
     }
@@ -144,7 +120,7 @@ private:
         DrawField();
         for(int i = 0; i < 4; ++i)
         {
-            DrawSpriteRect(tile_tim, {(short)(currentPiece[i].x*tileSize + 14), (short)(currentPiece[i].y*tileSize+16)}, {0, 0, 9, 9}, {(short)(_colorNum*9), 0}, {127, 127, 127});
+            otable->DrawSpriteRect(tile_tim, {(short)(currentPiece[i].x*tileSize + 14), (short)(currentPiece[i].y*tileSize+16)}, {0, 0, 9, 9}, {(short)(_colorNum*9), 0}, {127, 127, 127});
         }
     }
 
@@ -347,8 +323,6 @@ int main( int argc, const char *argv[] )
 	// Don't make pad driver acknowledge V-Blank IRQ (recommended)
 	ChangeClearPAD(0);
 
-    
-
     otable->LoadTextures(background_tim, background);
     otable->LoadTextures(tile_tim, tiles);
 
@@ -370,8 +344,8 @@ int main( int argc, const char *argv[] )
         fps_measure++;
         
         tetris.Update();
-        DrawSpriteRect(background_tim, {0, 0}, {0, 0, 160, 240}, {0, 0}, {86, 86, 86});
-        DrawSpriteRect(background_tim, {160, 0}, {0, 0, 160, 240}, {0, 0}, {127, 127, 127});
+        otable->DrawSpriteRect(background_tim, {0, 0}, {0, 0, 160, 240}, {0, 0}, {86, 86, 86});
+        otable->DrawSpriteRect(background_tim, {160, 0}, {0, 0, 160, 240}, {0, 0}, {127, 127, 127});
         
         otable->Display();
     }

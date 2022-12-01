@@ -127,6 +127,28 @@ public:
         DrawSync(0);
     }
 
+    inline void DrawSpriteRect(const TIM_IMAGE &tim, const SVECTOR &pos, const RECT &rect, const DVECTOR &uv, const CVECTOR &color)
+    {
+        SPRT *sprt = (SPRT *)GetNextPri();
+
+        setSprt(sprt);
+        setXY0(sprt, pos.vx, pos.vy);
+        setWH(sprt, rect.w, rect.h);
+        setRGB0(sprt, color.r, color.g, color.b);
+        setUV0(sprt, uv.vx, uv.vy);
+        setClut(sprt, tim.crect->x, tim.crect->y);
+
+        addPrim(GetOt(), sprt);
+
+        IncPri( sizeof(SPRT) );
+
+        DR_TPAGE *tpri = (DR_TPAGE *)GetNextPri();
+        auto tpage = getTPage(tim.mode, 0, tim.prect->x, tim.prect->y);
+        setDrawTPage(tpri, 0, 0, tpage);
+        addPrim(GetOt(), tpri);
+        IncPri( sizeof(DR_TPAGE) );
+    }
+
 }; /* Graphics */
 
 #endif //__GRAPHICS_H__
