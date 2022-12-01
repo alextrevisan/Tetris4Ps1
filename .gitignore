@@ -1,0 +1,12 @@
+
+.vscode
+bios/*.BIN
+build
+bin
+iso
+*.mcd
+*.frag
+*.lua
+*.vert
+pcsx.json
+comport.txt
