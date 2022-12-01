@@ -7,7 +7,7 @@ Simple game for PlayStation 1 using PSn00bSDK and modern C++
 ## Screenshots
 
 ![](screenshots/screenshot1.png "Screenshot")
-![](screenshots/screenshot2.png "Night")
+![](screenshots/screenshot2.png "Screenshot")
 
 ## Setting up PSn00bSDK
 Please follow the author steps: https://github.com/Lameguy64/PSn00bSDK/
