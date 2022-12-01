@@ -25,6 +25,7 @@ public:
 
     Graphics( int orderingTableLength = 8, int primitiveLength = 8192 )
     {
+        ResetGraph( 0 );
         _orderingTable[0] = new u_long[orderingTableLength];
         _orderingTable[1] = new u_long[orderingTableLength];
         
@@ -33,8 +34,8 @@ public:
         ClearOTagR( _orderingTable[0], _orderingTableCount );
         ClearOTagR( _orderingTable[1], _orderingTableCount );
         
-        _primitives[0] = (u_char*)malloc( primitiveLength );
-        _primitives[1] = (u_char*)malloc( primitiveLength );
+        _primitives[0] = new u_char[primitiveLength];
+        _primitives[1] = new u_char[primitiveLength];
         
         _nextPrimitive = _primitives[0];
         
@@ -44,11 +45,11 @@ public:
     
     virtual ~Graphics()
     {
-        free( _orderingTable[0] );
-        free( _orderingTable[1] );
+        delete[] _orderingTable[0];
+        delete[] _orderingTable[1];
         
-        free( _primitives[0] );
-        free( _primitives[1] );
+        delete[] _primitives[0];
+        delete[] _primitives[1];
         
         printf( "Graphics::Graphics: Buffers freed.\n" );
     }
@@ -83,6 +84,12 @@ public:
     {
         _nextPrimitive += bytes;
     }
+
+    template<typename T>
+    void IncPri()
+    {
+        _nextPrimitive += sizeof(T);
+    }
     
     void SetPri( u_char *ptr )
     {
@@ -92,6 +99,12 @@ public:
     u_char *GetNextPri( void )
     {
         return( _nextPrimitive );
+    }
+
+    template<typename T>
+    T *GetNextPri( )
+    {
+        return (T*) _nextPrimitive;
     }
     
     u_long *GetOt( void )
@@ -129,7 +142,7 @@ public:
 
     inline void DrawSpriteRect(const TIM_IMAGE &tim, const SVECTOR &pos, const RECT &rect, const DVECTOR &uv, const CVECTOR &color)
     {
-        SPRT *sprt = (SPRT *)GetNextPri();
+        SPRT *sprt = GetNextPri<SPRT>();
 
         setSprt(sprt);
         setXY0(sprt, pos.vx, pos.vy);
@@ -140,13 +153,13 @@ public:
 
         addPrim(GetOt(), sprt);
 
-        IncPri( sizeof(SPRT) );
+        IncPri<SPRT>();
 
-        DR_TPAGE *tpri = (DR_TPAGE *)GetNextPri();
+        DR_TPAGE *tpri = GetNextPri<DR_TPAGE>();
         auto tpage = getTPage(tim.mode, 0, tim.prect->x, tim.prect->y);
         setDrawTPage(tpri, 0, 0, tpage);
         addPrim(GetOt(), tpri);
-        IncPri( sizeof(DR_TPAGE) );
+        IncPri<DR_TPAGE>();
     }
 
 }; /* Graphics */

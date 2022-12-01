@@ -50,9 +50,6 @@ extern u_long tiles[];
 TIM_IMAGE background_tim;
 TIM_IMAGE tile_tim;
 
-uint8_t pad_buff[2][34];
-PADTYPE *pad;
-
 class Tetris
 {
     public:
@@ -309,19 +306,9 @@ public:
 
 int main( int argc, const char *argv[] )
 {
-    
-    ResetGraph( 0 );
+
     otable = new Graphics();
     otable->SetRes( 320, 240 );
-    // Init BIOS pad driver and set pad buffers (buffers are updated
-	// automatically on every V-Blank)
-	InitPAD(&pad_buff[0][0], 34, &pad_buff[1][0], 34);
-	
-	// Start pad
-	StartPAD();
-	
-	// Don't make pad driver acknowledge V-Blank IRQ (recommended)
-	ChangeClearPAD(0);
 
     otable->LoadTextures(background_tim, background);
     otable->LoadTextures(tile_tim, tiles);
@@ -331,8 +318,6 @@ int main( int argc, const char *argv[] )
     FntLoad(960, 0);
     FntOpen(0, 8, 320, 216, 0, 100);
     DrawSync(0);
-
-    pad = (PADTYPE*)&pad_buff[0][0];
 
     Tetris tetris;
 
@@ -344,6 +329,7 @@ int main( int argc, const char *argv[] )
         fps_measure++;
         
         tetris.Update();
+        
         otable->DrawSpriteRect(background_tim, {0, 0}, {0, 0, 160, 240}, {0, 0}, {86, 86, 86});
         otable->DrawSpriteRect(background_tim, {160, 0}, {0, 0, 160, 240}, {0, 0}, {127, 127, 127});
         
