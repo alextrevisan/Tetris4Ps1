@@ -15,6 +15,4 @@ background:
 tiles:
 	.incbin "textures/TILES.TIM"
 
-balls:
-	.incbin "textures/TILES.TIM"
 
